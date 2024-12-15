@@ -1,32 +1,31 @@
 // admin.controller.ts
-import { Request, Response } from 'express'
-import Joi from 'joi'
-import { comparePassword, hashPassword } from '../utils/bycrpt.utils'
-import { generateToken } from '../utils/jwt.utils'
-import Admin from '../models/admin.model'
-import { sendLoginEmail } from '../utils/nodemailer.utils'
+import { Request, Response } from 'express';
+import Joi from 'joi';
+import { comparePassword, hashPassword } from '../utils/bycrpt.utils';
+import { generateToken } from '../utils/jwt.utils';
+import Admin from '../models/admin.model';
+import { sendLoginEmail } from '../utils/nodemailer.utils';
 import geoip from 'geoip-lite';
-import uaParser from 'ua-parser-js';
 import DeviceDetector from 'device-detector-js';
-
 
 // Admin registration function
 export async function register(req: Request, res: Response) {
   try {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     // Check if the admin already exists
     const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
       return res.status(400).json({ message: 'Admin already exists' });
     }
+
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
     // Create a new admin user
     const newAdmin = new Admin({
       email,
-      passcode: hashedPassword
+      password: hashedPassword, 
     });
 
     await newAdmin.save();
@@ -56,12 +55,16 @@ export async function login(req: Request, res: Response) {
 
   try {
     const { email, password } = req.body;
+    console.log('Login attempt with email:', email);
+    console.log('Login attempt with password:', password);
 
     // Fetch admin data
     const admin = await Admin.findOne({ email });
     if (!admin) {
       return res.status(404).json({ message: 'Admin not found' });
     }
+    console.log('Found admin:', admin);
+    console.log('Stored admin password:', admin.password);
 
     // Validate password
     const isPasswordValid = await comparePassword(password, admin.password);
@@ -83,7 +86,7 @@ export async function login(req: Request, res: Response) {
     const location = geo ? `${geo.city}, ${geo.region}, ${geo.country}` : 'Unknown Location';
 
     // Extract device type
-    const userAgent = req.headers['user-agent'] || 'Unknown User-Agent'; // Extract user-agent from request headers
+    const userAgent = req.headers['user-agent'] || 'Unknown User-Agent';
     const deviceDetector = new DeviceDetector();
     const device = deviceDetector.parse(userAgent);
     const deviceType = device.device?.type || 'Unknown Device';
@@ -95,7 +98,7 @@ export async function login(req: Request, res: Response) {
 
     return res.status(200).json({ message: 'Admin Login successful', token });
   } catch (error) {
-    console.error(error);
+    console.error('Login error:', error);
     return res.status(500).json({ message: 'An error occurred while logging in' });
   }
 }

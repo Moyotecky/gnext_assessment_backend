@@ -6,8 +6,8 @@ import path from 'path';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.GMAIL_USER, // Your Gmail address from .env
-    pass: process.env.GMAIL_PASS, // Your Gmail app password from .env
+    user: process.env.GMAIL_USERNAME,
+    pass: process.env.GMAIL_PASSWORD,
   },
 });
 
@@ -20,7 +20,7 @@ export async function sendLoginEmail(
 ) {
   try {
     // Load and customize the email template
-    const emailPath = path.join(__dirname, '../../public/emails/login-email.html');
+    const emailPath = path.join(__dirname, '../../../public/emails/login-email.html');
     const emailTemplate = fs.readFileSync(emailPath, 'utf8');
     const customizedTemplate = emailTemplate
       .replace('{{location}}', location)
@@ -29,10 +29,10 @@ export async function sendLoginEmail(
 
     // Email options
     const mailOptions = {
-      from: `"GText Assessment" <${process.env.GMAIL_USER}>`, // Sender address
+      from: `"GText Assessment" <moyotecky@gmail.com>`, // Sender address
       to: recipient, // Recipient email
       subject: 'New Login Detected',
-      html: customizedTemplate, // Use the customized HTML template
+      html: customizedTemplate,
     };
 
     // Send the email
