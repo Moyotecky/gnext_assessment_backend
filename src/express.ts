@@ -4,6 +4,7 @@ import Logging from './v1/config/logging'
 import cors from 'cors'
 import { NODE_ENV } from './v1/config/config';
 import adminRoutes from './v1/routes/admin.routes';
+import productRoutes from './v1/routes/product.routes'
 
 export default async function setup(app: Application): Promise<Application> {
     if (NODE_ENV === 'production') {
@@ -15,6 +16,8 @@ export default async function setup(app: Application): Promise<Application> {
       }
     app.use(express.json())
     app.use("/api/v1/admin", adminRoutes);
+    app.use("/api/v1/products", productRoutes);
+
 
     app.get('/', (req, res) =>{
         res.send('Hello world')
