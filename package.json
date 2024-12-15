@@ -20,7 +20,7 @@
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "chalk": "^4.1.2",
-    "cloudinary": "^2.5.1",
+    "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "device-detector-js": "^3.0.3",
