@@ -30,7 +30,7 @@ export async function register(req: Request, res: Response) {
 
     await newAdmin.save();
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: 'Admin created successfully',
     });
   } catch (error) {
