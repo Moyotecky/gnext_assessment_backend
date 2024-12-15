@@ -5,16 +5,13 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-// Define a custom interface that extends Request
-interface RequestWithUserData extends Request {
-  userData?: { userId: string }; // Adjust the type as needed
-}
-export interface RequestWithUser extends Request {
-  user?: any // Use any or define a more specific type
+
+export interface RequestWithAdmin extends Request {
+  admin?: any // Use any or define a more specific type
 }
 
 export const adminAuthMiddleware = (
-  req: RequestWithUser,
+  req: RequestWithAdmin,
   res: Response,
   next: NextFunction
 ) => {
@@ -25,8 +22,8 @@ export const adminAuthMiddleware = (
 
   try {
     const decoded = verifyToken(token);
-    if (decoded && typeof decoded === "object" && "userId" in decoded) {
-      req.user = decoded; // Add user info to the request object
+    if (decoded && typeof decoded === "object" && "adminId" in decoded) {
+      req.admin = decoded; // Add admin info to the request object
       next();
     } else {
       return res.status(403).send("Access denied. Not an admin.");
