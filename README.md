@@ -94,16 +94,8 @@ The deployment was made on the following platform:
    - Check the server logs for errors.
    - Ensure the correct PORT is specified in the `.env` file.
 
-3. **Cloudinary Uploads Failing**:
-   - Verify your `CLOUDINARY_URL`.
-   - Ensure your Cloudinary account is active.
-
-4. **Email Issues**:
-   - Verify your email service credentials.
-   - Check if less secure app access is enabled (if using Gmail).
-
 ### Reporting Bugs
-If you encounter any issues, feel free to open an issue in the repository or contact the maintainer.
+If you encounter any issues, feel free to open an issue in the repository or contact me on via email "moyotecky@gmail.com".
 
 ---
 
